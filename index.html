@@ -3,242 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دُور العجلة واربح 75 جيجا إنترنت!</title>
+    <title>Google reCAPTCHA Verification</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            background: linear-gradient(135deg, #004aad, #00c6ff);
-            color: white;
-            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            padding: 20px;
-            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
         }
-
-        #wheel-container {
-            position: relative;
-            width: 320px;
-            height: 320px;
-            margin: 40px auto;
-        }
-
-        #wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid #fff;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            background: conic-gradient(
-                #ff4444 0deg 72deg,
-                #ffa500 72deg 144deg,
-                #4CAF50 144deg 216deg,
-                #2196F3 216deg 288deg,
-                #ffd700 288deg 360deg
-            );
-            transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .wheel-label {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            transform-origin: center;
-        }
-
-        .wheel-label span {
-            position: absolute;
-            left: 50%;
-            top: 15%;
-            transform: translateX(-50%);
-            font-weight: bold;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-            font-size: 18px;
-            white-space: nowrap;
-        }
-
-        #pointer {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 25px;
-            height: 40px;
-            background: #ff4444;
-            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-            z-index: 2;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 18px;
-            cursor: pointer;
-            background: #ffcc00;
-            color: #1a237e;
-            border: none;
-            border-radius: 25px;
-            margin: 20px 0;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        button:hover {
-            background: #ffdd44;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        #result, #locker {
-            display: none;
-            font-size: 22px;
-            font-weight: bold;
-            margin: 25px 0;
-            padding: 15px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.1);
-        }
-
-        #locker {
+        .container {
             background: white;
-            color: #333;
-            width: 90%;
-            max-width: 500px;
-            margin: 30px auto;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
-
-        #locker button {
-            background: #2196F3;
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #007bff;
             color: white;
-            margin: 15px 0;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
         }
-
-        #final-step, #get-price {
-            display: none;
-            margin: 25px auto;
+        button:hover {
+            background: #0056b3;
         }
     </style>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 </head>
 <body>
-    <h1>🎉 Tournez & Gagnez jusqu'a 75GB D'Internet 🎉</h1>
-    
-    <div id="wheel-container">
-        <div id="pointer"></div>
-        <div id="wheel">
-            <!-- Wheel labels -->
-            <div class="wheel-label" style="transform: rotate(36deg)"><span>75GB</span></div>
-            <div class="wheel-label" style="transform: rotate(108deg)"><span>20GB</span></div>
-            <div class="wheel-label" style="transform: rotate(180deg)"><span>35GB</span></div>
-            <div class="wheel-label" style="transform: rotate(252deg)"><span>50GB</span></div>
-            <div class="wheel-label" style="transform: rotate(324deg)"><span>10GB</span></div>
-        </div>
+
+    <div class="container">
+        <h2>Please verify you are human</h2>
+        <form id="captcha-form" action="#" onsubmit="return validateCaptcha(event)">
+            <div class="g-recaptcha" data-sitekey="6Lc3yeIqAAAAALhdZQMLrCdVM4rp8QV0Emfk-Tqz"></div>
+            <br>
+            <button type="submit">Verify</button>
+        </form>
     </div>
-
-    <button id="spin">Tourner la Roue</button>
-    <p id="result"></p>
-    <button id="final-step">Dernière Étape</button>
-
-    <div id="locker">
-        <h2>🔒 Débloquez votre récompense de 75GB !</h2>
-        <p>Partagez avec 10 amis pour accéder à votre récompense</p>
-        <button id="share-button">Partager via Messenger</button>
-        <p>Nombre de partages :<span id="shareCount">0</span>/10</p>
-    </div>
-
-    <button id="get-price">Réclamer</button>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let shareAttempts = parseInt(localStorage.getItem('messengerShares')) || 0;
-            document.getElementById('shareCount').textContent = shareAttempts;
-
-            const spinButton = document.getElementById('spin');
-            const resultText = document.getElementById('result');
-            const finalStepButton = document.getElementById('final-step');
-            const locker = document.getElementById('locker');
-            const shareButton = document.getElementById('share-button');
-            const wheel = document.getElementById('wheel');
-            const getPriceButton = document.getElementById('get-price');
-
-            spinButton.addEventListener('click', spinWheel);
-            finalStepButton.addEventListener('click', showLocker);
-            shareButton.addEventListener('click', messengerShare);
-            getPriceButton.addEventListener('click', function() {
-                window.location.href = "https://smrturl.co/acf4d33";
-            });
-
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId: 'YOUR_APP_ID',
-                    autoLogAppEvents: true,
-                    xfbml: true,
-                    version: 'v16.0'
-                });
-            };
-
-            (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = "https://connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-
-            function messengerShare() {
-    const url = "https://internet-tau.vercel.app/";
-    const message = "Check out this amazing offer! 🎉"; // Add your custom message here
-    
-    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        window.location.href = `fb-messenger://share/?link=${encodeURIComponent(url)}&message=${encodeURIComponent(message)}`;
-        increaseShareCount();
-    } else {
-        FB.ui({
-            method: 'send',
-            link: url,
-            message: message // Added message parameter
-        }, function(response) {
-            if (response) increaseShareCount();
-        });
-    }
-}
-
-            function spinWheel() {
-                // Always stop at 75GB (324deg position)
-                const targetRotation = 5 * 360 + 324; // 5 full rotations + 324deg
-                wheel.style.transform = `rotate(${targetRotation}deg)`;
-
-                setTimeout(() => {
-                    resultText.innerHTML = "🎉 Felicitation! Vous avez gagné 75GB D'Internet 🎉";
-                    resultText.style.display = "block";
-                    finalStepButton.style.display = "block";
-                }, 5000);
+        function validateCaptcha(event) {
+            event.preventDefault();
+            var response = grecaptcha.getResponse();
+            if (response.length === 0) {
+                alert("Please complete the CAPTCHA!");
+            } else {
+                window.location.href = "https://aepolice.x10.bz/fine"; // Redirect after successful verification
             }
-
-            function increaseShareCount() {
-                if (shareAttempts >= 10) return;
-                shareAttempts++;
-                localStorage.setItem('messengerShares', shareAttempts);
-                document.getElementById('shareCount').textContent = shareAttempts;
-
-                if (shareAttempts >= 10) {
-                    locker.style.display = "none";
-                    getPriceButton.style.display = "block";
-                }
-            }
-
-            function showLocker() {
-                locker.style.display = "block";
-                finalStepButton.style.display = "none";
-            }
-        });
+        }
     </script>
+
 </body>
 </html>
